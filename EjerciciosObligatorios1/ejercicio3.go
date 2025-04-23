@@ -20,37 +20,22 @@ func modificarPalabra(palabra string) string {
 	return resultado.String()
 }
 
-func limpiarPalabra(palabra string) (string, string) {
-	runas := []rune(palabra)
-	var puntuacion strings.Builder
-	var resultado strings.Builder
-	for i, _ := range runas {
-		if !unicode.IsPunct(runas[i]) {
-			resultado.WriteRune(runas[i])
-		} else {
-			puntuacion.WriteRune(runas[i])
-		}
-	}
-	return resultado.String(), puntuacion.String()
-}
-
 func main() {
 	argumento := os.Args[1]
 	frase := "Parece peqUEño, pero no es tan pequeÑo el PEQUEÑO"
-	palabras := strings.Fields(frase)
 	var resultado strings.Builder
-	for i := 0; i < len(palabras); i++ {
-		palabraLimpia, puntuacion := limpiarPalabra(palabras[i])
-		if strings.EqualFold(argumento, palabraLimpia) {
-			resultado.WriteString(modificarPalabra(palabraLimpia))
-			if puntuacion != "" {
-				resultado.WriteString(puntuacion + " ")
-			} else {
-				resultado.WriteString(" ")
-			}
+	for {
+		pos := strings.Index(strings.ToLower(frase), strings.ToLower(argumento))
+		if pos != -1 { //si da -1 es porque no encontro otra ocurrencia
+			resultado.WriteString(frase[:pos])
+			palabraRuna := (frase[pos : pos+len(argumento)])
+			resultado.WriteString(modificarPalabra(palabraRuna))
+			frase = frase[pos+len(argumento):]
 		} else {
-			resultado.WriteString(palabras[i] + " ")
+			resultado.WriteString(frase) // agrego lo que falta
+			break
 		}
 	}
 	fmt.Print(resultado.String())
 }
+
