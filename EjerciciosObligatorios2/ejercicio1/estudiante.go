@@ -10,7 +10,7 @@ type Estudiante struct {
 	nombre   string
 	apellido string
 	ciudad   string
-	fecha    Fecha
+	fecha    FechaNacimiento
 	titulo   bool
 	codigo   int //1 APU 2 LI 3 LS
 }
