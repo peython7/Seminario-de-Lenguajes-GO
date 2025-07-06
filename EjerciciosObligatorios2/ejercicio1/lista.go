@@ -33,14 +33,14 @@ func (l *List) Agregar(valor Estudiante) {
 	}
 }
 
-func FrontElement(l List) Estudiante {
+func FrontElement(l *List) Estudiante {
 	if IsEmpty(l){
 		fmt.Println("lista vacía") // error si la lista no tiene nodos
 	}
 	return l.head.data
 }
 
-func Len(l List) int {
+func Len(l *List) int {
 	if IsEmpty(l) {
 		return 0
 	} else {
@@ -54,7 +54,7 @@ func Len(l List) int {
 	}
 }
 
-func ToString(l List) string {
+func ToString(l *List) string {
 	if IsEmpty(l) {
 		return "La lista está vacía"
 	}
