@@ -1,150 +1,125 @@
 package ejercicio1
 
-import (
-	"fmt"
-	"strconv"
-)
+import "fmt"
 
-
-type List *element
-
-type element struct {
-	val  Ingresante
-	next List
-}
-
-// ----------- OPERACIONES DE LISTA ------------
-
-func New() List {
-	return nil
-}
-
-func IsEmpty(l List) bool {
-	return l == nil
-}
-
-func FrontElement(l List) Ingresante {
-	if l == nil {
-		panic("Lista vacía")
+func informarbariloche(lista List) {
+	for actual := lista.head; actual != nil; actual = actual.siguiente {
+		if actual.data.ciudad == "Bariloche" {
+			fmt.Println(actual.data.nombre, "", actual.data.apellido)
+		}
 	}
-	return l.val
 }
 
-func Next(l List) List {
-	if l == nil {
-		panic("Lista vacía")
+func calcularanio(lista List) int {
+	contador := make(map[int]int)
+	for actual := lista.head; actual != nil; actual = actual.siguiente {
+		contador[actual.data.fecha.anio]++
 	}
-	return l.next
+	max := 0
+	anio := 0
+	for k, v := range contador {
+		if v > max {
+			max = v
+			anio = k
+		}
+	}
+	return anio
 }
 
-func PushBack(l *List, elem Ingresante) {
-	if *l == nil {
-		*l = &element{val: elem}
+func calcularcarrera(lista List) string {
+	contador := make(map[int]int)
+	for actual := lista.head; actual != nil; actual = actual.siguiente {
+		contador[actual.data.codigo]++
+	}
+	max := 0
+	codigo := 0
+	for k, v := range contador {
+		if v > max {
+			max = v
+			codigo = k
+		}
+	}
+	switch codigo {
+	case 1:
+		return "APU"
+	case 2:
+		return "LI"
+	case 3:
+		return "LS"
+	default:
+		return "No se encontró la carrera"
+	}
+}
+
+func EliminarSinTitulo(lista *List) {
+	// Eliminar nodos desde el principio mientras el título sea falso
+	for lista.head != nil && !lista.head.data.titulo {
+		lista.head = lista.head.siguiente
+	}
+
+	// Si la lista quedó vacía, no hay nada más que hacer
+	if lista.head == nil {
 		return
 	}
-	actual := *l
-	for actual.next != nil {
-		actual = actual.next
+
+	// Recorrer la lista a partir del primer nodo con título
+	actual := lista.head
+	for actual != nil && actual.siguiente != nil {
+		if !actual.siguiente.data.titulo {
+			// Saltar el nodo sin título
+			actual.siguiente = actual.siguiente.siguiente
+		} else {
+			actual = actual.siguiente
+		}
 	}
-	actual.next = &element{val: elem}
 }
-
-// ----------- LÓGICA DE LA CONSIGNA ------------
-
-func ProcesarIngresantes(l *List) {
-	if IsEmpty(*l) {
-		fmt.Println("Lista vacía.")
-		return
-	}
-
-	nacimientosPorAnio := make(map[int]int)
-	inscriptosPorCarrera := make(map[string]int)
-
-	actual := *l
-	var anterior *element = nil
-
-	for actual != nil {
-		i := actual.val
-
-		// a) Ciudad: Bariloche
-		if i.Ciudad == "Bariloche" {
-			fmt.Println("De Bariloche:", i.Nombre, i.Apellido)
-		}
-
-		// b) Año de nacimiento
-		nacimientosPorAnio[i.Nacimiento.Anio]++
-
-		// c) Carrera
-		inscriptosPorCarrera[i.Carrera]++
-
-		// d) Eliminar si no presentó título
-		if !i.TituloPresentado {
-			if anterior == nil {
-				*l = actual.next
-				actual = *l
-				continue
-			} else {
-				anterior.next = actual.next
-				actual = anterior.next
-				continue
-			}
-		}
-
-		anterior = actual
-		actual = actual.next
-	}
-
-	// b) Año con más nacimientos
-	var anioMax int
-	var maxNac int
-	for anio, cant := range nacimientosPorAnio {
-		if cant > maxNac {
-			anioMax = anio
-			maxNac = cant
-		}
-	}
-	fmt.Println("Año con más nacimientos:", anioMax)
-
-	// c) Carrera con más inscriptos
-	var carreraMax string
-	var maxCarrera int
-	for carrera, cant := range inscriptosPorCarrera {
-		if cant > maxCarrera {
-			carreraMax = carrera
-			maxCarrera = cant
-		}
-	}
-	fmt.Println("Carrera con más inscriptos:", carreraMax)
-}
-
-// ----------- CONVERSIÓN A STRING PARA IMPRIMIR ------------
-
-func ToString(i Ingresante) string {
-	return i.Nombre + " " + i.Apellido + " - " + i.Ciudad + " - " +
-		strconv.Itoa(i.Nacimiento.Dia) + "/" +
-		strconv.Itoa(i.Nacimiento.Mes) + "/" +
-		strconv.Itoa(i.Nacimiento.Anio) + " - " +
-		"Carrera: " + i.Carrera
-}
-
-// ----------- FUNCIÓN PRINCIPAL ------------
 
 func main() {
-	l := New()
-
-	PushBack(&l, Ingresante{"Gómez", "Ana", "Bariloche", FechaNacimiento{10, 5, 2002}, true, "APU"})
-	PushBack(&l, Ingresante{"Pérez", "Luis", "Neuquén", FechaNacimiento{3, 7, 2001}, false, "LI"})
-	PushBack(&l, Ingresante{"López", "Carla", "Bariloche", FechaNacimiento{20, 10, 2002}, true, "LS"})
-	PushBack(&l, Ingresante{"Martínez", "Sofía", "Cipolletti", FechaNacimiento{15, 8, 2001}, true, "APU"})
-	PushBack(&l, Ingresante{"Ramos", "Julián", "Roca", FechaNacimiento{1, 1, 2002}, false, "LS"})
-
-	fmt.Println("Procesando ingresantes...\n")
-	ProcesarIngresantes(&l)
-
-	fmt.Println("\nLista final (sólo con quienes presentaron título):")
-	actual := l
-	for actual != nil {
-		fmt.Println(ToString(actual.val))
-		actual = actual.next
+	lista := New()
+	
+	estudiante1 := Estudiante{
+		nombre:   "Juan",
+		apellido: "Pérez",
+		ciudad:   "La Plata",
+		fecha: FechaNacimiento{
+			dia:  15,
+			mes:  3,
+			anio: 2000,
+		},
+		titulo: true,
+		codigo: 1, // APU
 	}
+
+	estudiante2 := Estudiante{
+		nombre:   "María",
+		apellido: "González",
+		ciudad:   "Bariloche",
+		fecha: FechaNacimiento{
+			dia:  22,
+			mes:  7,
+			anio: 1998,
+		},
+		titulo: false,
+		codigo: 1, // APU
+	}
+
+	estudiante3 := Estudiante{
+		nombre:   "Carlos",
+		apellido: "López",
+		ciudad:   "Rosario",
+		fecha: FechaNacimiento{
+			dia:  10,
+			mes:  11,
+			anio: 2000,
+		},
+		titulo: true,
+		codigo: 3, // LS
+	}
+	informarbariloche(lista)
+	fmt.Println("El año que mas ingresantes nacieron fue", calcularanio(lista))
+	fmt.Println("La carrera con mas ingresantes inscriptos fue", calcularcarrera(lista))
+	lista.Iterate()
+	EliminarSinTitulo(&lista)
+	fmt.Println("Lista nueva solo con los ingresantes que tienen titulo")
+	fmt.Println(ToString(lista))
 }
