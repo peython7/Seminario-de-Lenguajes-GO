@@ -2,8 +2,8 @@ package ejercicio1
 
 type FechaNacimiento struct {
 	dia int
-  mes int
-  anio int
+ 	mes int
+  	anio int
 }
 
 type Estudiante struct {
