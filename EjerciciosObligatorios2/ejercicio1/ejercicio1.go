@@ -1,24 +1,10 @@
-package main
+package ejercicio1
 
 import (
 	"fmt"
 	"strconv"
 )
 
-// ----------- DEFINICIÓN DE TIPOS ------------
-
-type FechaNacimiento struct {
-	Dia, Mes, Anio int
-}
-
-type Ingresante struct {
-	Apellido         string
-	Nombre           string
-	Ciudad           string
-	Nacimiento       FechaNacimiento
-	TituloPresentado bool
-	Carrera          string // "APU", "LI", "LS"
-}
 
 type List *element
 
