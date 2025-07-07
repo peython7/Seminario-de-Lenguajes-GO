@@ -2,7 +2,7 @@ package ejercicio1
 
 import "fmt"
 
-func informarbariloche(lista List) {
+func informarBariloche(lista List) {
 	for actual := lista.head; actual != nil; actual = actual.siguiente {
 		if actual.data.ciudad == "Bariloche" {
 			fmt.Println(actual.data.nombre, "", actual.data.apellido)
@@ -10,7 +10,7 @@ func informarbariloche(lista List) {
 	}
 }
 
-func calcularanio(lista List) int {
+func calcularAnio(lista List) int {
 	contador := make(map[int]int)
 	for actual := lista.head; actual != nil; actual = actual.siguiente {
 		contador[actual.data.fecha.anio]++
@@ -26,7 +26,7 @@ func calcularanio(lista List) int {
 	return anio
 }
 
-func calcularcarrera(lista List) string {
+func calcularCarrera(lista List) string {
 	contador := make(map[int]int)
 	for actual := lista.head; actual != nil; actual = actual.siguiente {
 		contador[actual.data.codigo]++
@@ -63,7 +63,7 @@ func EliminarSinTitulo(lista *List) {
 	}
 
 	// Recorrer la lista a partir del primer nodo con título
-	actual := lista.head
+	actual := lista.head //actual es un puntero al mismo nodo que lista.head
 	for actual != nil && actual.siguiente != nil {
 		if !actual.siguiente.data.titulo {
 			// Saltar el nodo sin título
@@ -115,9 +115,9 @@ func main() {
 		titulo: true,
 		codigo: 3, // LS
 	}
-	informarbariloche(lista)
-	fmt.Println("El año que mas ingresantes nacieron fue", calcularanio(lista))
-	fmt.Println("La carrera con mas ingresantes inscriptos fue", calcularcarrera(lista))
+	informarBariloche(lista)
+	fmt.Println("El año que mas ingresantes nacieron fue", calcularAnio(lista))
+	fmt.Println("La carrera con mas ingresantes inscriptos fue", calcularCarrera(lista))
 	lista.Iterate()
 	EliminarSinTitulo(&lista)
 	fmt.Println("Lista nueva solo con los ingresantes que tienen titulo")
