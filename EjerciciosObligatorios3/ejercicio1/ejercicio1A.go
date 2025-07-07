@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"     // para leer argumentos desde la línea de comandos
+	"fmt"     
 	"strconv" // para convertir texto a número
-	"time"    // para medir el tiempo de ejecución
+	"time"    
 )
 
 func esPrimo(n int) bool {
@@ -21,7 +21,7 @@ func esPrimo(n int) bool {
 
 func main() {
 	start := time.Now() // iniciamos el cronómetro para medir el tiempo de ejecución
-	var input string    // aca almacenamos lo que vamos a leer
+	var input string    
 	fmt.Print("Ingresá un número entero positivo: ")
 	fmt.Scanln(&input) // Ponemos &input porque Scanln necesita la dirección de memoria donde va a guardar lo que lea
 
@@ -32,9 +32,7 @@ func main() {
 		return
 	}
 
-	fmt.Printf("Números primos menores o iguales a %d:\n", N) // calculamos los primos
-	//%d es un placeholder para un número entero.
-	//\n agrega salto de línea.
+	fmt.Printf("Números primos menores o iguales a %d:\n", N) 
 	for i := 2; i <= N; i++ {
 		if esPrimo(i) {
 			fmt.Print(i, " ")
