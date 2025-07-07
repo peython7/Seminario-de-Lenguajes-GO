@@ -56,8 +56,9 @@ func calcularHash(b *Block) string {
 		b.Data.Timestamp.String() +
 		b.Timestamp.String()
 
-	hash := sha256.Sum256([]byte(data))
-	return fmt.Sprintf("%x", hash)
+	hash := sha256.Sum256([]byte(data))//Calcula el hash SHA-256 del contenido de data
+	//Devuelve un valor fijo de 32 bytes 
+	return fmt.Sprintf("%x", hash)//lo convierto a hexadecimal para mejor legibilidad
 }
 
 func (bc *Blockchain) InsertarBloque(t Transaction) {
@@ -87,19 +88,20 @@ func (bc *Blockchain) InsertarBloque(t Transaction) {
 func (bc Blockchain) ObtenerSaldo(id string) float64 { // Obtiene el saldo de una billetera dada su ID
 	saldo := 0.0
 	actual := bc.Head
-	for actual != nil { // Recorre la cadena de bloques
+	//Calcula el saldo de la billetera segun el id, recorriendo la blockchain
+	for actual != nil { // Recorro la cadena de bloques
 		if actual.Data.OrigenID == id {
-			saldo -= actual.Data.Monto
+			saldo -= actual.Data.Monto //Si el id aparece como OrigenID, resto el monto
 		}
 		if actual.Data.DestinoID == id {
-			saldo += actual.Data.Monto
+			saldo += actual.Data.Monto //Si aparece como DestinoID, lo sumo
 		}
 		actual = actual.Siguiente
 	}
 	return saldo
 }
 
-func (bc Blockchain) ValidarCadena() bool { // Verifica la validez de la cadena de bloques
+func (bc Blockchain) ValidarCadena() bool {
 	actual := bc.Head
 	for actual != nil && actual.Siguiente != nil { // Recorre la cadena de bloques
 		if actual.Siguiente.PreviousHash != actual.Hash { // Verifica que el hash del bloque siguiente coincida con el hash del bloque actual
@@ -125,12 +127,12 @@ func main() {
 	pedro := CrearBilletera("A1", "Pedro", "Vega")
 	lucio := CrearBilletera("B1", "Lucio", "Vaccarini")
 
-	tx1 := NuevaTransaccion(100, "SISTEMA", pedro.ID)
-	bc.InsertarBloque(tx1)
+	transaccion1 := NuevaTransaccion(70, "SISTEMA", pedro.ID)
+	bc.InsertarBloque(transaccion1)
 
-	if bc.PuedeTransferir(pedro.ID, 40) {
-		tx2 := NuevaTransaccion(40, pedro.ID, lucio.ID)
-		bc.InsertarBloque(tx2)
+	if bc.PuedeTransferir(pedro.ID, 30) {
+		transaccion2 := NuevaTransaccion(30, pedro.ID, lucio.ID)
+		bc.InsertarBloque(transaccion2)
 	} else {
 		fmt.Println("Saldo insuficiente para transferir.")
 	}
