@@ -24,7 +24,7 @@ func main() {
 					resultado.WriteRune(unicode.ToLower(runesReemplazo[i]))
 				}
 			}
-			frase = frase[pos+len(buscado):]
+			frase = frase[pos+len(buscado):] // descarto la parte procesada y actualizo frase para seguir buscando en lo que queda de la frase.
 		} else {
 			resultado.WriteString(frase) // agrego lo que falta
 			break
