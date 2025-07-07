@@ -91,8 +91,8 @@ func PushBack(l *List, valor Estudiante) {
 	}
 }
 
-func (l List) Iterate() {
-	if IsEmpty(&l) {
+func (l *List) Iterate() {
+	if IsEmpty(l) {
 		fmt.Println("La lista está vacía")
 		return
 	}
