@@ -18,6 +18,15 @@ const (
 
 var wg sync.WaitGroup
 
+func atenderCaja(id int, cola chan Cliente) {
+	defer wg.Done()
+	for cliente := range cola {
+		tiempoAtencion := time.Duration(rand.Intn(1000)) * time.Millisecond
+		fmt.Printf("Cajero %d atendiendo al cliente %d durante %v\n", id, cliente.ID, tiempoAtencion)
+		time.Sleep(tiempoAtencion)
+	}
+}
+
 func main() {
 	start := time.Now()
 
@@ -52,11 +61,3 @@ func main() {
 	fmt.Println("Tiempo total:", time.Since(start))
 }
 
-func atenderCaja(id int, cola chan Cliente) {
-	defer wg.Done()
-	for cliente := range cola {
-		tiempoAtencion := time.Duration(rand.Intn(1000)) * time.Millisecond
-		fmt.Printf("Cajero %d atendiendo al cliente %d durante %v\n", id, cliente.ID, tiempoAtencion)
-		time.Sleep(tiempoAtencion)
-	}
-}
