@@ -24,7 +24,7 @@ func invertirPalabra(palabra string) string {
 
 func main() {
 	frase := "Qué lindo día es hoy"
-	palabras := strings.Fields(frase)
+	palabras := strings.Fields(frase) //el strings.Fields divide la cadena en un slice de palabras, separándolas por espacios en blanco 
 	var resultado strings.Builder
 	for i := 0; i < len(palabras); i++ {
 		if (i+1)%2 != 0 {
