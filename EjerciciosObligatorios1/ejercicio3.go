@@ -21,6 +21,10 @@ func modificarPalabra(palabra string) string {
 }
 
 func main() {
+	if len(os.Args) < 2 {
+		fmt.Println("Debe ingresar una palabra como argumento.")
+		return
+	}
 	argumento := os.Args[1]
 	frase := "Parece peqUEño, pero no es tan pequeÑo el PEQUEÑO"
 	var resultado strings.Builder
@@ -39,3 +43,12 @@ func main() {
 	fmt.Print(resultado.String())
 }
 
+/*
+os.Args es un slice de strings con los argumentos de línea de comandos.
+
+os.Args[0] es el nombre del programa.
+
+os.Args[1] es el primer argumento real.
+
+Entonces, si len(os.Args) < 2, significa que no se pasó ningún argumento, y el programa muestra un mensaje y termina.
+*/
