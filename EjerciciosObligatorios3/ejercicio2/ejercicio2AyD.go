@@ -14,6 +14,15 @@ type Cliente struct {
 var colaClientes = make(chan Cliente, 100)
 var wg sync.WaitGroup
 
+func atenderClientes(id int) {
+	defer wg.Done()
+	for cliente := range colaClientes {
+		tiempoAtencion := time.Duration(rand.Intn(1000)) * time.Millisecond // simula el tiempo de atención entre 0 y 1 segundo
+		fmt.Printf("cajero %d atendiendo al cliente %d durante %v\n", id, cliente.ID, tiempoAtencion)
+		time.Sleep(tiempoAtencion)
+	}
+}
+
 func main() {
 	cajas := 3
 	clientesTotales := 100 // cantidad de clientes que se van a agregar a la cola
@@ -30,24 +39,15 @@ func main() {
 	// Cerrar la cola de clientes
 	close(colaClientes)
 
-	// Iniciar los cajeros
+	// Inicio los cajeros
 	for i := 1; i <= cajas; i++ {
 		wg.Add(1)
 		go atenderClientes(i)
 	}
 
 	wg.Wait() // espera a que todos los cajeros terminen
-	fmt.Println("todos los cajeros terminaron de atender ")
-	fmt.Println("todos los clientes fueron atendidos")
+	fmt.Println("todos los cajeros terminaron de atender.")
+	fmt.Println("todos los clientes fueron atendidos.")
 	elapsed := time.Since(start)
 	fmt.Println("Tiempo total:", elapsed)
-}
-
-func atenderClientes(id int) {
-	defer wg.Done()
-	for cliente := range colaClientes {
-		tiempoAtencion := time.Duration(rand.Intn(1000)) * time.Millisecond // simula el tiempo de atención entre 0 y 1 segundo
-		fmt.Printf("cajero %d atendiendo al cliente %d durante %v\n", id, cliente.ID, tiempoAtencion)
-		time.Sleep(tiempoAtencion)
-	}
 }
