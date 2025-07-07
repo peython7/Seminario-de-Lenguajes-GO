@@ -50,7 +50,7 @@ func main() {
 		fmt.Printf("Cliente %d asignado a la caja %d\n", cliente.ID, cajaAsignada+1) // +1 para que las cajas arranquen desde 1
 	}
 
-	// Cerrar las colas
+	// Cierro las colas
 	for i := 0; i < cajas; i++ {
 		close(colas[i])
 	}
